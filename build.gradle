@@ -18,6 +18,6 @@ dependencies {
     implementation 'org.springframework.kafka:spring-kafka'
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
     testImplementation 'org.springframework.kafka:spring-kafka-test'
-    implementation 'com.google.code.gson:gson:2.8.5'
     compile group: 'commons-io', name: 'commons-io', version: '2.6'
+    compile group: 'com.j2html', name: 'j2html', version: '1.4.0'
 }

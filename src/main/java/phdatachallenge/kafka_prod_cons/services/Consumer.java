@@ -10,6 +10,8 @@ import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import static j2html.TagCreator.body;
+
 @Service
 public class Consumer {
 
@@ -21,22 +23,14 @@ public class Consumer {
     public void getFromKafka(String record) {
 
         if (record.equals(SIGNAL)) {
-            List<String> results = mostFrequent();
+            List<String> results = getMostFrequent();
             for (String result : results) {
                 System.out.println(result);
             }
-            System.out.println(results.size());
         } else {
             parseStringToApacheLogClass(record);
-//            System.out.println(record);
 
         }
-
-
-//        ApacheLog apacheLog1 = (ApacheLog) jsonConverter.fromJson(simpleModel, ApacheLog.class);
-
-//        System.out.println(apacheLog1.toString());
-//        logParserServices.readLogAndParseToClass("chicken");
     }
 
     private void parseStringToApacheLogClass(String record) {
@@ -68,7 +62,7 @@ public class Consumer {
         return date;
     }
 
-    private List<String> mostFrequent() {
+    private List<String> getMostFrequent() {
 
         // Insert all elements in hash
         Map<String, Integer> occurrenceMap = new HashMap<>();
@@ -94,13 +88,12 @@ public class Consumer {
             }
         }
 
+        // find all ApacheLog that has max frequency
         for (Map.Entry<String, Integer> val : occurrenceMap.entrySet()) {
             if (maxCount == val.getValue()) {
                 results.add(val.getKey());
             }
         }
-
-        System.out.println(maxCount);
 
         return results;
     }

@@ -1,6 +1,5 @@
 package phdatachallenge.kafka_prod_cons.configs;
 
-import com.google.gson.Gson;
 import org.apache.kafka.clients.consumer.ConsumerConfig;
 import org.apache.kafka.clients.producer.ProducerConfig;
 import org.apache.kafka.common.serialization.StringDeserializer;
@@ -56,11 +55,6 @@ public class KafkaConfig {
         concurrentKafkaListenerContainerFactory.setConsumerFactory(consumerFactory());
 
         return concurrentKafkaListenerContainerFactory;
-    }
-
-    @Bean
-    public Gson jsonConverter(){
-        return new Gson();
     }
 
 }
