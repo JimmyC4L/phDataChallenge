@@ -13,7 +13,6 @@ import phdatachallenge.kafka_prod_cons.services.Producer;
 @RequestMapping("/api/kafka")
 public class KafkaSimpleController {
 
-    private KafkaTemplate<String, String> kafkaTemplate;
     private Gson jsonConverter;
     private Producer producer;
 
@@ -26,18 +25,6 @@ public class KafkaSimpleController {
     @PostMapping
     public void post(){
         producer.readLogAndSendLines();
-    }
-
-    @KafkaListener(topics = "myTopic")
-    public void getFromKafka(String simpleModel){
-
-
-        System.out.println(simpleModel);
-
-//        ApacheLog apacheLog1 = (ApacheLog) jsonConverter.fromJson(simpleModel, ApacheLog.class);
-
-//        System.out.println(apacheLog1.toString());
-//        logParserServices.readLogAndParseToClass("chicken");
     }
 
 }

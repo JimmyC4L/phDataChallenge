@@ -52,6 +52,6 @@ public class ApacheLog implements Serializable {
     }
 
     public String toString(){
-        return address + " " + DateAndTime + "\n";
+        return address + " " + DateAndTime + " " + requestType + " " + responseCode + "\n";
     }
 }
