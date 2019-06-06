@@ -6,6 +6,9 @@ import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.stereotype.Service;
 
 import java.io.*;
+import java.net.URISyntaxException;
+import java.net.URL;
+import java.nio.file.Paths;
 import java.util.List;
 
 @Service
@@ -20,15 +23,16 @@ public class Producer {
 
     public void readLogAndSendLines() {
         try {
-            File f = new File("/Users/jimmy/src/kafka_prod_cons/src/main/resources/logs/log.txt");
-            List<String> lines = FileUtils.readLines(f, "UTF-8");
+            URL res = getClass().getClassLoader().getResource("logs/log.txt");
+            File file = Paths.get(res.toURI()).toFile();
+            List<String> lines = FileUtils.readLines(file, "UTF-8");
 
             for (String line : lines) {
                 kafkaTemplate.send("myTopic", line);
             }
             kafkaTemplate.send("myTopic", "CATCH_THE_ATTACKER");
 
-        } catch (IOException e) {
+        } catch (IOException | URISyntaxException e) {
             e.printStackTrace();
         }
     }
