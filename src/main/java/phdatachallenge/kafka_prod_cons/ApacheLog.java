@@ -9,14 +9,17 @@ public class ApacheLog implements Serializable {
     private Date DateAndTime;
     private String requestType;
     private int responseCode;
+    private String browserInfo;
 
-    public ApacheLog(){}
+    public ApacheLog() {
+    }
 
-    public ApacheLog(String address, Date DateAndTime, String requestType, int responseCode){
+    public ApacheLog(String address, Date DateAndTime, String requestType, int responseCode, String browserInfo) {
         this.address = address;
         this.DateAndTime = DateAndTime;
         this.requestType = requestType;
         this.responseCode = responseCode;
+        this.browserInfo = browserInfo;
     }
 
     public String getAddress() {
@@ -35,6 +38,10 @@ public class ApacheLog implements Serializable {
         return responseCode;
     }
 
+    public String getBrowserInfo() {
+        return browserInfo;
+    }
+
     public void setAddress(String address) {
         this.address = address;
     }
@@ -51,7 +58,11 @@ public class ApacheLog implements Serializable {
         this.responseCode = responseCode;
     }
 
-    public String toString(){
-        return address + " " + DateAndTime + " " + requestType + " " + responseCode + "\n";
+    public void setBrowserInfo(String browserInfo) {
+        this.browserInfo = browserInfo;
+    }
+
+    public String toString() {
+        return address + " " + DateAndTime + " " + requestType + " " + responseCode + " " + browserInfo + "\n";
     }
 }

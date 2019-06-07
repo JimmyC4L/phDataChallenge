@@ -10,8 +10,6 @@ import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import static j2html.TagCreator.body;
-
 @Service
 public class Consumer {
 
@@ -23,20 +21,23 @@ public class Consumer {
     public void getFromKafka(String record) {
 
         if (record.equals(SIGNAL)) {
-            List<String> results = getMostFrequent();
-            for (String result : results) {
-                System.out.println(result);
+            Map<String, List<ApacheLog>> results = getMostFrequent();
+            for (Map.Entry<String, List<ApacheLog>> result : results.entrySet()) {
+                System.out.println(result.getKey());
+                for (ApacheLog apacheLog : result.getValue()) {
+                    System.out.println(apacheLog.toString());
+                }
             }
+            System.out.println(results.size());
         } else {
             parseStringToApacheLogClass(record);
-
         }
     }
 
     private void parseStringToApacheLogClass(String record) {
         final String regex = "^(\\S+) (\\S+) (\\S+) " +
                 "\\[([\\w:/]+\\s[+\\-]\\d{4})\\] \"(\\S+)" +
-                " (\\S+)\\s*(\\S+)?\\s*\" (\\d{3}) (\\S+)";
+                " (\\S+)\\s*(\\S+)?\\s*\" (\\d{3}) (\\S+) (\\S+) (.*)";
 
         final Pattern pattern = Pattern.compile(regex, Pattern.MULTILINE);
         final Matcher matcher = pattern.matcher(record);
@@ -46,7 +47,8 @@ public class Consumer {
                     matcher.group(1),
                     parseStringToDateAndTime(matcher.group(4)),
                     matcher.group(5),
-                    Integer.parseInt(matcher.group(8)));
+                    Integer.parseInt(matcher.group(8)),
+                    matcher.group(11));
             apacheLogs.add(apacheLog);
         }
     }
@@ -62,7 +64,7 @@ public class Consumer {
         return date;
     }
 
-    private List<String> getMostFrequent() {
+    private Map<String, List<ApacheLog>> getMostFrequent() {
 
         // Insert all elements in hash
         Map<String, Integer> occurrenceMap = new HashMap<>();
@@ -82,19 +84,30 @@ public class Consumer {
         int maxCount = 0;
         List<String> results = new ArrayList<>();
 
-        for (Map.Entry<String, Integer> val : occurrenceMap.entrySet()) {
-            if (maxCount < val.getValue()) {
-                maxCount = val.getValue();
+        for (Map.Entry<String, Integer> entry : occurrenceMap.entrySet()) {
+            if (maxCount < entry.getValue()) {
+                maxCount = entry.getValue();
+                results = new ArrayList<>();
+            } else if (maxCount == entry.getValue()) {
+                results.add(entry.getKey());
             }
         }
 
-        // find all ApacheLog that has max frequency
-        for (Map.Entry<String, Integer> val : occurrenceMap.entrySet()) {
-            if (maxCount == val.getValue()) {
-                results.add(val.getKey());
+        return consolidateResults(results);
+    }
+
+    private Map<String, List<ApacheLog>> consolidateResults(List<String> results) {
+        Map<String, List<ApacheLog>> consolidatedResults = new HashMap<>();
+        for (String result : results) {
+            List<ApacheLog> sameAddressApacheLogs = new ArrayList<>();
+            for (ApacheLog apacheLog : apacheLogs) {
+                if (result.equals(apacheLog.getAddress())) {
+                    sameAddressApacheLogs.add(apacheLog);
+                }
             }
+            consolidatedResults.put(result, sameAddressApacheLogs);
         }
 
-        return results;
+        return  consolidatedResults;
     }
 }
