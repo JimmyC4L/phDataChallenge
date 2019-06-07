@@ -20,4 +20,6 @@ dependencies {
     testImplementation 'org.springframework.kafka:spring-kafka-test'
     compile group: 'commons-io', name: 'commons-io', version: '2.6'
     compile group: 'com.j2html', name: 'j2html', version: '1.4.0'
+    compile 'org.springframework.boot:spring-boot-starter-data-jpa'
+    compile 'mysql:mysql-connector-java'
 }
