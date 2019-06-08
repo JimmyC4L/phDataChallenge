@@ -22,4 +22,6 @@ dependencies {
     compile group: 'com.j2html', name: 'j2html', version: '1.4.0'
     compile 'org.springframework.boot:spring-boot-starter-data-jpa'
     compile 'mysql:mysql-connector-java'
+    compile group: 'com.google.code.gson', name: 'gson', version: '2.7'
+    compile group: 'com.amazonaws', name: 'aws-java-sdk', version: '1.11.568'
 }

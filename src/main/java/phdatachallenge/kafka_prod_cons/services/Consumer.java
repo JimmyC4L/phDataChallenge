@@ -1,28 +1,45 @@
 package phdatachallenge.kafka_prod_cons.services;
 
+import com.google.gson.Gson;
+import org.apache.commons.io.FileUtils;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.kafka.annotation.KafkaListener;
 import org.springframework.stereotype.Service;
 import phdatachallenge.kafka_prod_cons.Models.ApacheLog;
 import phdatachallenge.kafka_prod_cons.Models.Attacker;
 
+import java.io.File;
+import java.io.IOException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import static java.nio.charset.Charset.forName;
+
 @Service
 public class Consumer {
+
+    private Gson gson;
+    private AmazonService amazonService;
 
     private static final String SIGNAL = "CATCH_THE_ATTACKER";
 
     private List<ApacheLog> apacheLogs = new ArrayList<>();
+
+    @Autowired
+    public Consumer(Gson gson, AmazonService amazonService) {
+        this.gson = gson;
+        this.amazonService = amazonService;
+    }
 
     @KafkaListener(topics = "myTopic", groupId = "myGroupId")
     public void getFromKafka(String record) {
 
         if (record.equals(SIGNAL)) {
             List<Attacker> attackers = getMostFrequent();
+            generateJsonFileFromResultsAndUploadeToAmazonS3(attackers);
             for (Attacker attacker : attackers) {
                 System.out.println(attacker.toString());
             }
@@ -109,5 +126,20 @@ public class Consumer {
         }
 
         return  consolidatedResults;
+    }
+
+    private void generateJsonFileFromResultsAndUploadeToAmazonS3(List<Attacker> attackers) {
+        StringBuilder stringBuilder = new StringBuilder();
+        for (Attacker attacker : attackers) {
+            stringBuilder.append(gson.toJson(attacker));
+        }
+        try {
+            File tempFile = File.createTempFile("attackers", ".tmp");
+            FileUtils.writeStringToFile(tempFile, stringBuilder.toString(), forName("UTF-8"));
+            amazonService.uploadFile(tempFile);
+            tempFile.delete();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 }
