@@ -10,9 +10,9 @@ public class Attacker {
 
     private int hits;
 
-    private List<ApacheLogEntity> apacheLogs;
+    private List<ApacheLog> apacheLogs;
 
-    public Attacker(String address, int hits, List<ApacheLogEntity> apacheLogs) {
+    public Attacker(String address, int hits, List<ApacheLog> apacheLogs) {
         this.address = address;
         this.hits = hits;
         this.apacheLogs = apacheLogs;
@@ -34,11 +34,20 @@ public class Attacker {
         this.hits = hits;
     }
 
-    public List<ApacheLogEntity> getApacheLogs() {
+    public List<ApacheLog> getApacheLogs() {
         return apacheLogs;
     }
 
-    public void setApacheLogs(List<ApacheLogEntity> apacheLogs) {
+    public void setApacheLogs(List<ApacheLog> apacheLogs) {
         this.apacheLogs = apacheLogs;
+    }
+
+    public String toString() {
+        StringBuilder stringBuilder = new StringBuilder();
+        stringBuilder.append(address + " " + hits + ": \n");
+        for (ApacheLog apacheLog : apacheLogs) {
+            stringBuilder.append("     "+ apacheLog.toString() + "\n");
+        }
+        return stringBuilder.toString();
     }
 }

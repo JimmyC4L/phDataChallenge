@@ -3,6 +3,7 @@ package phdatachallenge.kafka_prod_cons.services;
 import org.springframework.kafka.annotation.KafkaListener;
 import org.springframework.stereotype.Service;
 import phdatachallenge.kafka_prod_cons.Models.ApacheLog;
+import phdatachallenge.kafka_prod_cons.Models.Attacker;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -21,14 +22,11 @@ public class Consumer {
     public void getFromKafka(String record) {
 
         if (record.equals(SIGNAL)) {
-            Map<String, List<ApacheLog>> results = getMostFrequent();
-            for (Map.Entry<String, List<ApacheLog>> result : results.entrySet()) {
-                System.out.println(result.getKey());
-                for (ApacheLog apacheLog : result.getValue()) {
-                    System.out.println(apacheLog.toString());
-                }
+            List<Attacker> attackers = getMostFrequent();
+            for (Attacker attacker : attackers) {
+                System.out.println(attacker.toString());
             }
-            System.out.println(results.size());
+            System.out.println(attackers.size());
         } else {
             parseStringToApacheLogClass(record);
         }
@@ -64,7 +62,7 @@ public class Consumer {
         return date;
     }
 
-    private Map<String, List<ApacheLog>> getMostFrequent() {
+    private List<Attacker> getMostFrequent() {
 
         // Insert all elements in hash
         Map<String, Integer> occurrenceMap = new HashMap<>();
@@ -93,19 +91,21 @@ public class Consumer {
             }
         }
 
-        return consolidateResults(results);
+        return consolidateResults(results, maxCount);
     }
 
-    private Map<String, List<ApacheLog>> consolidateResults(List<String> results) {
-        Map<String, List<ApacheLog>> consolidatedResults = new HashMap<>();
+    private List<Attacker> consolidateResults(List<String> results, int hits) {
+        List<Attacker> consolidatedResults = new ArrayList<>();
         for (String result : results) {
+            Attacker attacker = new Attacker(result, hits, null);
             List<ApacheLog> sameAddressApacheLogs = new ArrayList<>();
             for (ApacheLog apacheLog : apacheLogs) {
                 if (result.equals(apacheLog.getAddress())) {
                     sameAddressApacheLogs.add(apacheLog);
                 }
+                attacker.setApacheLogs(sameAddressApacheLogs);
             }
-            consolidatedResults.put(result, sameAddressApacheLogs);
+            consolidatedResults.add(attacker);
         }
 
         return  consolidatedResults;
