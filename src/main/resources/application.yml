@@ -1,14 +1,25 @@
 server:
-  port: 9000
+    port: 9000
 spring:
-  kafka:
-    consumer:
-      bootstrap-servers: localhost:9092
-      group-id: group_id
-      auto-offset-reset: earliest
-      key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
-      value-deserializer: org.apache.kafka.common.serialization.StringDeserializer
-    producer:
-      bootstrap-servers: localhost:9092
-      key-serializer: org.apache.kafka.common.serialization.StringSerializer
-      value-serializer: org.apache.kafka.common.serialization.StringSerializer
+    datasource:
+        url: jdbc:mysql://localhost:3306/phData_challenge?useUnicode=true&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=UTC
+        username: root
+        password: password
+    http:
+        converters:
+            preferred-json-mapper: gson
+    jpa:
+        hibernate:
+            ddl-auto: create-drop
+#
+#    kafka:
+#        consumer:
+#            bootstrap-servers: localhost:9092
+#            group-id: group_id
+#            auto-offset-reset: earliest
+#            key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+#            value-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+#        producer:
+#            bootstrap-servers: localhost:9092
+#            key-serializer: org.apache.kafka.common.serialization.StringSerializer
+#            value-serializer: org.apache.kafka.common.serialization.StringSerializer
