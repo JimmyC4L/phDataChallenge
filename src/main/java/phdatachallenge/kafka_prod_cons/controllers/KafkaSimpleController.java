@@ -23,13 +23,12 @@ public class KafkaSimpleController {
     }
 
     @PostMapping
-    public void post(){
+    public void readLogAndSendLines(){
         producer.readLogAndSendLines();
     }
 
     @GetMapping(path="/all")
     public List<ApacheLog> getAllApacheLog() {
-        // This returns a JSON or XML with the users
         return apacheLogService.getAllApacheLogs();
     }
 
