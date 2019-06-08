@@ -2,7 +2,7 @@ package phdatachallenge.kafka_prod_cons.services;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import phdatachallenge.kafka_prod_cons.ApacheLog;
+import phdatachallenge.kafka_prod_cons.Models.ApacheLog;
 import phdatachallenge.kafka_prod_cons.ApacheLogRepository.ApacheLogRepository;
 
 import java.util.List;

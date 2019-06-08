@@ -1,11 +1,10 @@
 package phdatachallenge.kafka_prod_cons.services;
 
 import org.springframework.stereotype.Service;
-import phdatachallenge.kafka_prod_cons.ApacheLog;
+import phdatachallenge.kafka_prod_cons.Models.ApacheLog;
 import phdatachallenge.kafka_prod_cons.Entities.ApacheLogEntity;
 
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 
 @Service

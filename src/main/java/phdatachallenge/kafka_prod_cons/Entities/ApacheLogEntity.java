@@ -1,21 +1,32 @@
 package phdatachallenge.kafka_prod_cons.Entities;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
 import java.util.Date;
 
 @Entity
 public class ApacheLogEntity {
     @Id
-    @GeneratedValue(strategy= GenerationType.AUTO)
-    private Integer id;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private int id;
+
     private String address;
     private Date DateAndTime;
     private String requestType;
     private int responseCode;
     private String browserInfo;
+
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @JoinColumn(name = "attackerEntity_id", nullable = false)
+    private AttackerEntity attackerEntity;
+
+    public ApacheLogEntity(String address, Date dateAndTime, String requestType, int responseCode, String browserInfo, AttackerEntity attackerEntity) {
+        this.address = address;
+        DateAndTime = dateAndTime;
+        this.requestType = requestType;
+        this.responseCode = responseCode;
+        this.browserInfo = browserInfo;
+        this.attackerEntity = attackerEntity;
+    }
 
     public Integer getId() {
         return id;
@@ -64,4 +75,5 @@ public class ApacheLogEntity {
     public void setBrowserInfo(String browserInfo) {
         this.browserInfo = browserInfo;
     }
+
 }

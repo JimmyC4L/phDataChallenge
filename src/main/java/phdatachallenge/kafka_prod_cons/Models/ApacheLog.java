@@ -1,4 +1,4 @@
-package phdatachallenge.kafka_prod_cons;
+package phdatachallenge.kafka_prod_cons.Models;
 
 import java.io.Serializable;
 import java.util.Date;

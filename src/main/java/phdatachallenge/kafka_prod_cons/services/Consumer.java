@@ -2,7 +2,7 @@ package phdatachallenge.kafka_prod_cons.services;
 
 import org.springframework.kafka.annotation.KafkaListener;
 import org.springframework.stereotype.Service;
-import phdatachallenge.kafka_prod_cons.ApacheLog;
+import phdatachallenge.kafka_prod_cons.Models.ApacheLog;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
