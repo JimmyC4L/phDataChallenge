@@ -10,14 +10,14 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api/kafka")
-public class KafkaSimpleController {
+public class KafkaController {
 
     private Producer producer;
     private ApacheLogService apacheLogService;
 
 
     @Autowired
-    public KafkaSimpleController(Producer producer, ApacheLogService apacheLogService){
+    public KafkaController(Producer producer, ApacheLogService apacheLogService){
         this.producer = producer;
         this.apacheLogService = apacheLogService;
     }
