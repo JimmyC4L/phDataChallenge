@@ -27,7 +27,7 @@ public class KafkaSimpleController {
         producer.readLogAndSendLines();
     }
 
-    @GetMapping(path="/all")
+    @GetMapping(path="/all/apacheLogs")
     public List<ApacheLog> getAllApacheLog() {
         return apacheLogService.getAllApacheLogs();
     }
