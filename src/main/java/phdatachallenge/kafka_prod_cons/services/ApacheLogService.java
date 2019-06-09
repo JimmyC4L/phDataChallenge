@@ -20,7 +20,7 @@ public class ApacheLogService {
     }
 
     public List<ApacheLog> getAllApacheLogs(){
-       return mappingService.convertAll(apacheLogRepository.findAll());
+       return mappingService.convertAllApacheLogEntities(apacheLogRepository.findAll());
     }
 
 }

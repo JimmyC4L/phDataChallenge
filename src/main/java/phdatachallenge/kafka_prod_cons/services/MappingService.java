@@ -17,7 +17,7 @@ public class MappingService {
     @PersistenceContext
     private EntityManager entityManager;
 
-    public List<ApacheLog> convertAll(Iterable<ApacheLogEntity> apacheLogEntities) {
+    public List<ApacheLog> convertAllApacheLogEntities(Iterable<ApacheLogEntity> apacheLogEntities) {
         List<ApacheLog> results = new ArrayList<>();
         for (ApacheLogEntity apacheLogEntity : apacheLogEntities) {
             results.add(convertOne(apacheLogEntity));
@@ -31,6 +31,18 @@ public class MappingService {
 
     public ApacheLogEntity convertOne(ApacheLog apacheLog) {
         return new ApacheLogEntity(apacheLog.getAddress(),apacheLog.getDateAndTime(), apacheLog.getRequestType(), apacheLog.getResponseCode(), apacheLog.getBrowserInfo(),  null);
+    }
+
+    public List<Attacker> convertAll(Iterable<AttackerEntity> attackerEntities) {
+        List<Attacker> results = new ArrayList<>();
+        for (AttackerEntity attackerEntity : attackerEntities) {
+            results.add(convertOne(attackerEntity));
+        }
+        return results;
+    }
+
+    public Attacker convertOne(AttackerEntity attackerEntity) {
+        return new Attacker(attackerEntity.getAddress(), attackerEntity.getHits(), convertAllApacheLogEntities(attackerEntity.getApacheLogs()));
     }
 
     public List<AttackerEntity> convertAll(List<Attacker> attackers) {

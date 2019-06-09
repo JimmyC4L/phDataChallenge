@@ -41,11 +41,11 @@ public class Consumer {
 
         if (record.equals(SIGNAL)) {
             List<Attacker> attackers = getMostFrequent();
-            generateJsonFileFromResultsAndUploadeToAmazonS3(attackers);
-            saveToDatabase(attackers);
             for (Attacker attacker : attackers) {
                 System.out.println(attacker.toString());
             }
+            generateJsonFileFromResultsAndUploadeToAmazonS3(attackers);
+            saveToDatabase(attackers);
             System.out.println(attackers.size());
         } else {
             parseStringToApacheLogClass(record);

@@ -27,4 +27,8 @@ public class AttackerService {
         mappingService.fillAttackerId(attackerEntities);
         attackerRepository.saveAll(attackerEntities);
     }
+
+    public List<Attacker> getAllAttackers() {
+        return mappingService.convertAll(attackerRepository.findAll());
+    }
 }
