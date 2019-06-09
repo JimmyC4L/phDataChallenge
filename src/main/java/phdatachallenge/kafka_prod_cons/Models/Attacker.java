@@ -6,6 +6,8 @@ import java.util.List;
 
 public class Attacker {
 
+    private Integer id;
+
     private String address;
 
     private int hits;
@@ -16,6 +18,14 @@ public class Attacker {
         this.address = address;
         this.hits = hits;
         this.apacheLogs = apacheLogs;
+    }
+
+    public Integer getId() {
+        return id;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
     }
 
     public String getAddress() {

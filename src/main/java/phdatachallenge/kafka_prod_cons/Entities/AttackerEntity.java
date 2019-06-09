@@ -17,6 +17,10 @@ public class AttackerEntity {
     @OneToMany(mappedBy = "attackerEntity", cascade = CascadeType.ALL)
     private List<ApacheLogEntity> apacheLogs;
 
+    public AttackerEntity(){
+
+    }
+
     public AttackerEntity(String address, int hits, List<ApacheLogEntity> apacheLogs) {
         this.address = address;
         this.hits = hits;

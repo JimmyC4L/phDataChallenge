@@ -23,15 +23,17 @@ public class Consumer {
 
     private Gson gson;
     private AmazonService amazonService;
+    private AttackerService attackerService;
 
     private static final String SIGNAL = "CATCH_THE_ATTACKER";
 
     private List<ApacheLog> apacheLogs = new ArrayList<>();
 
     @Autowired
-    public Consumer(Gson gson, AmazonService amazonService) {
+    public Consumer(Gson gson, AmazonService amazonService, AttackerService attackerService) {
         this.gson = gson;
         this.amazonService = amazonService;
+        this.attackerService = attackerService;
     }
 
     @KafkaListener(topics = "myTopic", groupId = "myGroupId")
@@ -40,6 +42,7 @@ public class Consumer {
         if (record.equals(SIGNAL)) {
             List<Attacker> attackers = getMostFrequent();
             generateJsonFileFromResultsAndUploadeToAmazonS3(attackers);
+            saveToDatabase(attackers);
             for (Attacker attacker : attackers) {
                 System.out.println(attacker.toString());
             }
@@ -142,4 +145,9 @@ public class Consumer {
             e.printStackTrace();
         }
     }
+
+    private void saveToDatabase(List<Attacker> attackers) {
+        attackerService.saveAll(attackers);
+    }
+
 }

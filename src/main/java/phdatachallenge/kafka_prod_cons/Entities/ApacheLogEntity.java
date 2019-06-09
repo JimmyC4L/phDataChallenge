@@ -15,9 +15,13 @@ public class ApacheLogEntity {
     private int responseCode;
     private String browserInfo;
 
-    @ManyToOne(fetch = FetchType.LAZY, optional = false)
-    @JoinColumn(name = "attackerEntity_id", nullable = false)
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "attackerEntity_id")
     private AttackerEntity attackerEntity;
+
+    public ApacheLogEntity(){
+
+    }
 
     public ApacheLogEntity(String address, Date dateAndTime, String requestType, int responseCode, String browserInfo, AttackerEntity attackerEntity) {
         this.address = address;
@@ -52,6 +56,10 @@ public class ApacheLogEntity {
         return browserInfo;
     }
 
+    public AttackerEntity getAttackerEntity() {
+        return attackerEntity;
+    }
+
     public void setId(Integer id) {
         this.id = id;
     }
@@ -76,4 +84,7 @@ public class ApacheLogEntity {
         this.browserInfo = browserInfo;
     }
 
+    public void setAttackerEntity(AttackerEntity attackerEntity) {
+        this.attackerEntity = attackerEntity;
+    }
 }
